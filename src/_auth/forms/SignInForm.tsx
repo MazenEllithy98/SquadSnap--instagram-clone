@@ -15,9 +15,7 @@ import { SignInValidation } from "@/lib/validation";
 import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  useSignInAccount,
-} from "@/lib/react-query/queriesAndMutations";
+import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "@/context/AuthContext";
 
 const SignInForm = () => {
@@ -37,13 +35,14 @@ const SignInForm = () => {
   });
 
   // Handler.
-  const handleSignup = async (user: z.infer<typeof SignInValidation>) => {
+  const handleSignIn = async (user: z.infer<typeof SignInValidation>) => {
     try {
+      console.log("we're in");
       const session = await signInAccount({
         email: user.email,
         password: user.password,
       });
-
+      console.log({ session });
       if (!session) {
         toast({
           title: "Something went wrong. Please try again.",
@@ -81,7 +80,7 @@ const SignInForm = () => {
         </p>
 
         <form
-          onSubmit={form.handleSubmit(handleSignup)}
+          onSubmit={form.handleSubmit(handleSignIn)}
           className="flex flex-col gap-5 w-full mt-4"
         >
           <FormField

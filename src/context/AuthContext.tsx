@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return true;
       }
 
-      return false;
+      // return false;
     } catch (error) {
       console.log(error);
       return false;
