@@ -1,4 +1,4 @@
-import { INewUser } from "@/types";
+import { INewPost, INewUser } from "@/types";
 import {
   useQuery,
   useMutation,
@@ -9,7 +9,10 @@ import {
   createUserAccount,
   signInAccount,
   signOutAccount,
+  createPost,
+  getRecentPosts,
 } from "../appwrite/api";
+import { QUERY_KEYS } from "./queryKeys";
 
 export const useCreateUserAccount = () => {
   return useMutation({
@@ -27,3 +30,25 @@ export const useSignOutAccount = () => {
     mutationFn: signOutAccount,
   });
 };
+
+// POST QUERIES
+
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (post: INewPost) => createPost(post),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      });
+    },
+  });
+};
+
+
+export const useGetRecentPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+    queryFn: getRecentPosts,
+  })
+}
